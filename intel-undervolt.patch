@@ -1,0 +1,22 @@
+diff --git a/config.c b/config.c
+index c4d221f..c987332 100644
+--- a/config.c
++++ b/config.c
+@@ -663,7 +663,7 @@ struct config_t * load_config(struct config_t * old_config, bool * nl) {
+ #ifdef IS_FREEBSD
+ 					char * dev = "/dev/cpuctl0";
+ #else
+-					char * dev = "/dev/cpu/0/msr";
++					char * dev = "/dev/intluv";
+ #endif
+ 					int fd = open(dev, O_RDWR | O_SYNC);
+ 					if (fd < 0) {
+@@ -677,7 +677,7 @@ struct config_t * load_config(struct config_t * old_config, bool * nl) {
+ 							execlp(executable, executable, "cpuctl", NULL);
+ #else
+ 							char * executable = "/sbin/modprobe";
+-							execlp(executable, executable, "msr", NULL);
++							execlp(executable, executable, "intluv", NULL);
+ #endif
+ 							exit(1);
+ 						} else {
