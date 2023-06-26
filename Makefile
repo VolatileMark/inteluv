@@ -22,4 +22,8 @@ clean:
 test:
 	gcc inteluv_test.c -o inteluv_test
 
+dkms:
+	cp dkms.conf.in dkms.conf
+	sed -i s/@@VERSION@@/$(version)/g dkms.conf
+
 .PHONY: sign module clean

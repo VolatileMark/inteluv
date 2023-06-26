@@ -13,3 +13,4 @@ modules.order
 .cache
 compile_commands.json
 inteluv_test
+dkms.conf
