@@ -24,7 +24,11 @@ static ssize_t inteluv_write(
 													size_t length,
 													loff_t* offset);
 
-static int major;
+#define DEVICE_NAME		"intluv"
+#define DEVICE_READY	0
+#define DEVICE_BUSY		1
+
+#static int major;
 static struct class *cls;
 static struct file_operations fops = {
 	.open = inteluv_open,
@@ -39,9 +43,6 @@ static uint32_t allowed_msrs[] = {
 	0x1A2,	// Temperature
 };
 
-#define DEVICE_NAME		"intluv"
-#define DEVICE_READY	0
-#define DEVICE_BUSY		1
 #define SUCCESS				0
 #define NUM_ALLOWED_MSRS (sizeof(allowed_msrs) / sizeof(uint32_t))
 
