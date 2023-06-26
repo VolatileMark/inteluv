@@ -1,10 +1,10 @@
-KVER ?= $(shell uname -r)
-CERT_KEY ?= /var/lib/shim-signed/mok/MOK.priv
-CERT_X509 ?= /var/lib/shim-signed/mok/MOK.der
-HASH_ALGO ?= sha512
+KDIR ?= /lib/modules/$(shell uname -r)/build
+CERT_KEY ?= $(shell grep SIGNING -e "KEY=" | cut -d "=" -f 2)
+CERT_X509 ?= $(shell grep SIGNING -e "X509=" | cut -d "=" -f 2)
+HASH_ALGO ?= $(shell grep SIGNING -e "HASH=" | cut -d "=" -f 2)
 
 sign-file = $(shell find /usr/src -name sign-file)
-build-dir = /lib/modules/$(KVER)/build
+version = $(shell cat VERSION)
 
 kobj-target = inteluv.ko
 obj-m += inteluv.o
@@ -13,10 +13,10 @@ sign: module
 	$(sign-file) $(HASH_ALGO) $(CERT_KEY) $(CERT_X509) $(kobj-target)
 
 module:
-	$(MAKE) -C $(build-dir) M=$(PWD) modules
+	$(MAKE) -C $(KDIR) M=$(PWD) modules
 
 clean:
-	$(MAKE) -C $(build-dir) M=$(PWD) clean
+	$(MAKE) -C $(KDIR) M=$(PWD) clean
 	rm -f inteluv_test
 
 test:
