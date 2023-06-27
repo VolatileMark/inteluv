@@ -28,7 +28,7 @@ static ssize_t inteluv_write(
 #define DEVICE_READY	0
 #define DEVICE_BUSY		1
 
-#static int major;
+static int major;
 static struct class *cls;
 static struct file_operations fops = {
 	.open = inteluv_open,
