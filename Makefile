@@ -28,7 +28,8 @@ dkms:
 	$(dkms) add $(PWD)
 
 dkms-setup:
+	rm -f /etc/dkms/framework.conf.d/dkms-signing-keys.conf
 	echo "mok_signing_key=\"$(CERT_KEY)\"" >> /etc/dkms/framework.conf.d/dkms-signing-keys.conf
-	echo "mok_certificate=\"$(CERT_X509)\"" >> /ect/dkms/framework.conf.d/dkms-signing-keys.conf
+	echo "mok_certificate=\"$(CERT_X509)\"" >> /etc/dkms/framework.conf.d/dkms-signing-keys.conf
 
 .PHONY: sign module clean
