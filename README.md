@@ -10,11 +10,10 @@ A whitelist has been put in place to restrict access to said MSRs, but I do not 
 
 <details>
       <summary>Fedora</summary>
-      ```bash
+      
       $ sudo dnf install \
             kernel-devel \
             kernel-headers
-      ```
 </details>
 
 ## BUILDING
@@ -50,9 +49,8 @@ Before we start, make sure you have [DKMS](https://wiki.archlinux.org/title/Dyna
 
 <details>
       <summary>Fedora</summary>
-      ```bash
+      
       $ sudo dnf install dkms
-      ```
 </details>
 
 Then run the following commands as root. 
