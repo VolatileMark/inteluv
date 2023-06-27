@@ -5,15 +5,16 @@ HASH_ALGO ?= $(shell grep SIGNING -e "HASH=" | cut -d "=" -f 2)
 
 sign-file = $(shell find /usr/src -name sign-file)
 version = $(shell cat VERSION)
+dkms = $(shell which dkms)
 
 kobj-target = inteluv.ko
 obj-m += inteluv.o
 
-sign: module
-	$(sign-file) $(HASH_ALGO) $(CERT_KEY) $(CERT_X509) $(kobj-target)
-
 module:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules
+
+sign:
+	$(sign-file) $(HASH_ALGO) $(CERT_KEY) $(CERT_X509) $(kobj-target)
 
 clean:
 	$(MAKE) -C $(KDIR) M=$(PWD) clean
@@ -23,7 +24,11 @@ test:
 	gcc inteluv_test.c -o inteluv_test
 
 dkms:
-	cp dkms.conf.in dkms.conf
-	sed -i s/@@VERSION@@/$(version)/g dkms.conf
+	sed s/@@VERSION@@/$(version)/g dkms.conf.in > dkms.conf
+	$(dkms) add $(PWD)
+
+dkms-setup:
+	echo "mok_signing_key=\"$(CERT_KEY)\"" >> /etc/dkms/framework.conf.d/dkms-signing-keys.conf
+	echo "mok_certificate=\"$(CERT_X509)\"" >> /ect/dkms/framework.conf.d/dkms-signing-keys.conf
 
 .PHONY: sign module clean
