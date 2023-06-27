@@ -8,7 +8,7 @@ for more information.
 
 First, choose a safe place to store your keys. A good location would be one that is:
 
-- Made by the user (do not choose `/usr/bin`, please).
+- Made by the user.
 - Accessible/modifiable only to root.
 - Located on an encrypted drive/partition.
 
@@ -17,7 +17,7 @@ For example I chose `/var/lib/shim-signed/mok`.
 Now run the following commands as root:
 
 ```bash
-⋕ MOKDIR="/var/lib/shim-signed" # replace this path with the one you chose.
+⋕ MOKDIR="/var/lib/shim-signed/mok" # replace this path with the one you chose.
 ⋕ mkdir -p $MOKDIR && cd $MOKDIR
 ⋕ openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -days 36500 -noenc -subj "/CN=My MOK" # replace "My MOK" with whatever you want
 ```
