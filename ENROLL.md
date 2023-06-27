@@ -1,6 +1,6 @@
 # ENROLLING YOUR OWN MOK
 
-> **Note** This guide assumes you are using shim as your first-stage bootloader (a bootloader that loads the bootloader that loads your OS).  
+> **Note** This guide assumes you are using shim as your first-stage bootloader (a bootloader that loads the bootloader that loads your OS). 
 Most distributions (like Fedora) already use this by default. Check out the [Arch Wiki](https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#shim) 
 for more information. 
 
