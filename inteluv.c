@@ -24,7 +24,7 @@ static ssize_t inteluv_write(
 													size_t length,
 													loff_t* offset);
 
-#define DEVICE_NAME		"intluv"
+#define DEVICE_NAME		"inteluv"
 #define DEVICE_READY	0
 #define DEVICE_BUSY		1
 
