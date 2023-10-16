@@ -31,7 +31,6 @@ void run(void) {
         " MSR_UNITS:       %0lX  \n"
         "------------------------\n",
         temp, volt, units);
-  volt = 0xABACAB;
   err = pwrite(fd, (char*) &volt, sizeof(uint64_t), 0x150);
   IFERROR(err < 0, "Could not write to MSR_VOLTAGE");
   printf("SUCCESSFULLY WRITTEN TO VOLTAGE MSR\n");
