@@ -142,7 +142,7 @@ static ssize_t inteluv_write(
 	if (copy_from_user(data, buffer, sizeof(data)))
 		return -EFAULT;
 
-	inteluv_info("writing value %lld to %X", *((uint64_t*) data), msr_address);
+	inteluv_info("writing value %llX to %X", *((uint64_t*) data), msr_address);
 
 	wrmsr_safe_on_cpu(0, msr_address, data[0], data[1]);
 	

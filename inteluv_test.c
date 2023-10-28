@@ -16,7 +16,7 @@ void run(void) {
   int fd, err;
   uint64_t temp, volt, units;
   fd = open("/dev/intluv", O_RDWR);
-  IFERROR(fd < 0, "Could not open /dev/intluv");
+  IFERROR(fd < 0, "Could not open /dev/inteluv");
   err = pread(fd, (char*) &temp, sizeof(uint64_t), 0x1A2);
   IFERROR(err < 0, "Could not read MSR_TEMPERATURE");
   err = pread(fd, (char*) &volt, sizeof(uint64_t), 0x150);

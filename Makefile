@@ -32,4 +32,4 @@ dkms-setup:
 	echo "mok_signing_key=\"$(CERT_KEY)\"" >> /etc/dkms/framework.conf.d/dkms-signing-keys.conf
 	echo "mok_certificate=\"$(CERT_X509)\"" >> /etc/dkms/framework.conf.d/dkms-signing-keys.conf
 
-.PHONY: sign module clean
+.PHONY: sign module clean test dkms dkms-setup
