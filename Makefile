@@ -6,18 +6,19 @@ HASH_ALGO ?= $(shell grep SIGNING -e "HASH=" | cut -d "=" -f 2)
 sign-file = $(shell find /usr/src -name sign-file)
 version = $(shell cat VERSION)
 dkms = $(shell which dkms)
+pwd = $(shell pwd)
 
 kobj-target = inteluv.ko
 obj-m += inteluv.o
 
 module:
-	$(MAKE) -C $(KDIR) M=$(PWD) modules
+	$(MAKE) -C $(KDIR) M=$(pwd) modules
 
 sign:
 	$(sign-file) $(HASH_ALGO) $(CERT_KEY) $(CERT_X509) $(kobj-target)
 
 clean:
-	$(MAKE) -C $(KDIR) M=$(PWD) clean
+	$(MAKE) -C $(KDIR) M=$(pwd) clean
 	rm -f inteluv_test
 
 test:
@@ -25,7 +26,7 @@ test:
 
 dkms:
 	sed s/@@VERSION@@/$(version)/g dkms.conf.in > dkms.conf
-	$(dkms) add $(PWD)
+	$(dkms) add $(pwd)
 
 dkms-setup:
 	rm -f /etc/dkms/framework.conf.d/dkms-signing-keys.conf

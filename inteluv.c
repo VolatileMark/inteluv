@@ -7,22 +7,22 @@
 #include <asm/msr.h>
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("VolatileMark");
+MODULE_AUTHOR("markx86");
 MODULE_DESCRIPTION("Allows reading/writing to/from specific MSRs to allow \
 										undervolting of Intel CPUs");
 
 static int inteluv_open(struct inode* inode, struct file* file);
 static int inteluv_release(struct inode* inode, struct file* file);
 static ssize_t inteluv_read(
-													struct file* file,
-													char __user* buffer,
-													size_t length,
-													loff_t* offset);
+	struct file* file,
+	char __user* buffer,
+	size_t length,
+	loff_t* offset);
 static ssize_t inteluv_write(
-													struct file* file,
-													const char __user* buffer,
-													size_t length,
-													loff_t* offset);
+	struct file* file,
+	const char __user* buffer,
+	size_t length,
+	loff_t* offset);
 
 #define DEVICE_NAME		"inteluv"
 #define DEVICE_READY	0
@@ -59,7 +59,7 @@ static int __init inteluv_init(void) {
 	}
 	inteluv_info("registered char device with major number %d.", major);
 
-	cls = class_create(THIS_MODULE, DEVICE_NAME);
+	cls = class_create(DEVICE_NAME);
 	device_create(cls, NULL, MKDEV(major, 0), NULL, DEVICE_NAME);
 	inteluv_info("device created on /dev/%s", DEVICE_NAME);
 	
