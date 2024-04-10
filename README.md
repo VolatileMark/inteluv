@@ -18,7 +18,8 @@ A whitelist has been put in place to restrict access only to said MSRs, but I do
 
 ## BUILDING
 
-> **Note** If you want to use DKMS for automatic module rebuilding, follow this [chapter](#setting-up-dkms). This is also what
+> [!NOTE]
+> If you want to use DKMS for automatic module rebuilding, follow this [chapter](#setting-up-dkms). This is also what
 I recommend doing for a more seamless experience.
 
 First thing first, you'll have to enroll your own MOK. If you don't know how to do that, check [this](ENROLL.md) out.  
