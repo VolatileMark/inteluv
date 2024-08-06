@@ -1,4 +1,6 @@
 KDIR ?= /lib/modules/$(shell uname -r)/build
+ODIR ?= $(abspath .)
+EXTRAFLAGS ?=
 CERT_KEY ?= $(shell grep SIGNING -e "KEY=" | cut -d "=" -f 2)
 CERT_X509 ?= $(shell grep SIGNING -e "X509=" | cut -d "=" -f 2)
 HASH_ALGO ?= $(shell grep SIGNING -e "HASH=" | cut -d "=" -f 2)
@@ -12,7 +14,7 @@ kobj-target = inteluv.ko
 obj-m += inteluv.o
 
 module:
-	$(MAKE) -C $(KDIR) M=$(pwd) modules
+	$(MAKE) $(EXTRAFLAGS) -C $(KDIR) M=$(ODIR) src=$(pwd) modules
 
 sign:
 	$(sign-file) $(HASH_ALGO) $(CERT_KEY) $(CERT_X509) $(kobj-target)

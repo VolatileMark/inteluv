@@ -1,0 +1,8 @@
+modname=inteluv
+modver=$(cat "${srcdir:-.}"/VERSION)
+built_modules='inteluv.ko'
+
+build() {
+	touch "$builddir"/Makefile
+	make -C "$srcdir" KDIR="$kernel_srcdir" ODIR="$builddir" EXTRAFLAGS=${MAKEFLAGS:-}
+}
