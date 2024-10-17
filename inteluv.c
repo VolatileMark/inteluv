@@ -37,31 +37,31 @@ static struct file_operations fops = {
 	.read = inteluv_read,
 };
 static atomic_t device_state = ATOMIC_INIT(DEVICE_READY);
-static uint32_t allowed_msrs[] = {
-	0x606,	// Units
-	0x150,	// Voltage
-	0x1A2,	// Temperature
-};
+
+#define MSR_UNITS 0x606
+#define MSR_VOLTAGE 0x150
+#define MSR_TEMPERATURE 0x1A2
 
 #define SUCCESS				0
-#define NUM_ALLOWED_MSRS (sizeof(allowed_msrs) / sizeof(uint32_t))
 
-#define inteluv_info(s, ...)	pr_info("inteluv: " s, ##__VA_ARGS__)
-#define inteluv_crit(s, ...)	pr_crit("inteluv: " s, ##__VA_ARGS__)
-#define inteluv_err(s, ...)		pr_err("inteluv: " s, ##__VA_ARGS__)
-#define inteluv_warn(s, ...)	pr_warn("inteluv: " s, ##__VA_ARGS__)
+static inline int is_valid_msr_address(uint32_t msr_address) {
+	return
+			msr_address == MSR_UNITS &&
+	    msr_address == MSR_VOLTAGE && 
+	    msr_address == MSR_TEMPERATURE;
+}
 
 static int __init inteluv_init(void) {
 	major = register_chrdev(0, DEVICE_NAME, &fops);
 	if (major < 0) {
-		inteluv_crit("failed to register char device. [error: %d]", major);
+		pr_crit("failed to register char device. [error: %d]", major);
 		return major;
 	}
-	inteluv_info("registered char device with major number %d.", major);
+	pr_info("registered char device with major number %d.", major);
 
 	cls = class_create(DEVICE_NAME);
 	device_create(cls, NULL, MKDEV(major, 0), NULL, DEVICE_NAME);
-	inteluv_info("device created on /dev/%s", DEVICE_NAME);
+	pr_info("device created on /dev/%s", DEVICE_NAME);
 	
 	return SUCCESS;
 }
@@ -92,7 +92,6 @@ static ssize_t inteluv_read(
 													char __user* buffer,
 													size_t length,
 													loff_t* offset) {
-	size_t msr;
 	uint32_t msr_address;
 	uint32_t data[2];
 
@@ -102,11 +101,8 @@ static ssize_t inteluv_read(
 	if (buffer == NULL || offset == NULL)
 		return -EINVAL;
 	
-	for (
-		msr = 0, msr_address = *offset;
-		msr < NUM_ALLOWED_MSRS && msr_address != allowed_msrs[msr];
-		++msr);
-	if (msr >= NUM_ALLOWED_MSRS)
+	msr_address = *offset;
+	if (!is_valid_msr_address(msr_address))
 		return -EINVAL;
 
 	rdmsr_safe_on_cpu(0, msr_address, &data[0], &data[1]);
@@ -122,7 +118,6 @@ static ssize_t inteluv_write(
 														const char __user* buffer,
 														size_t length,
 														loff_t* offset) {
-	size_t msr;
 	uint32_t msr_address;
 	uint32_t data[2];
 
@@ -132,17 +127,14 @@ static ssize_t inteluv_write(
 	if (buffer == NULL || offset == NULL)
 		return -EINVAL;
 	
-	for (
-		msr = 0, msr_address = *offset;
-		msr < NUM_ALLOWED_MSRS && msr_address != allowed_msrs[msr];
-		++msr);
-	if (msr >= NUM_ALLOWED_MSRS)
+	msr_address = *offset;
+	if (!is_valid_msr_address(msr_address))
 		return -EINVAL;
 
 	if (copy_from_user(data, buffer, sizeof(data)))
 		return -EFAULT;
 
-	inteluv_info("writing value %llX to %X", *((uint64_t*) data), msr_address);
+	pr_info("writing value %llX to %X", *((uint64_t*) data), msr_address);
 
 	wrmsr_safe_on_cpu(0, msr_address, data[0], data[1]);
 	
